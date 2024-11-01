@@ -28,9 +28,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressContentEditableWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`} >
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
         <Providers>
-
           <Navbar />
           {/* Navbar is also a container.  
           Meaning both Navbar and main content 
