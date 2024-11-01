@@ -3,6 +3,14 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "@/components/navbar/Navbar";
 import { Provider } from "@radix-ui/react-toast";
+// import { ClerkProvider } from "@clerk/clerk-react";
+import {
+  ClerkProvider,
+  SignInButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from "@clerk/nextjs";
 import Providers from "./providers";
 
 const geistSans = localFont({
@@ -27,19 +35,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressContentEditableWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <Providers>
-          <Navbar />
-          {/* Navbar is also a container.  
-          Meaning both Navbar and main content 
-          have the same width and the same 
-          horizontally centered behaviour */}
-          <main className="container py-10"> {children} </main>
-        </Providers>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en" suppressContentEditableWarning>
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
+          <Providers>
+            <Navbar />
+            <main className="container py-10"> {children} </main>
+          </Providers>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
