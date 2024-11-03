@@ -3,14 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "@/components/navbar/Navbar";
 import { Provider } from "@radix-ui/react-toast";
-// import { ClerkProvider } from "@clerk/clerk-react";
-import {
-  ClerkProvider,
-  SignInButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from "@clerk/nextjs";
+import { ClerkProvider } from "@clerk/nextjs";
 import Providers from "./providers";
 
 const geistSans = localFont({
