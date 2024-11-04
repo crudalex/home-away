@@ -1,7 +1,4 @@
 import React from "react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
 
 const createProfileAction = async (formData: FormData) => {
   "use server";
@@ -15,11 +12,7 @@ function CreateProfilePage() {
       <h1 className="text-2xl font-semibold mb-8 capitalize">
         new user
         <div className="border p-8 round-md max-w-lg ">
-          <form action={createProfileAction}>
-            <Button type="submit" size="lg">
-              Create Profile
-            </Button>
-          </form>
+          <form action={createProfileAction}></form>
         </div>
       </h1>
     </section>
