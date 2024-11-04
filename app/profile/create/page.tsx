@@ -16,10 +16,6 @@ function CreateProfilePage() {
         new user
         <div className="border p-8 round-md max-w-lg ">
           <form action={createProfileAction}>
-            <div className="mb-2 ">
-              <Label htmlFor="firstName">First Name</Label>
-              <Input id="firstName" name="firstName" type="text" />
-            </div>
             <Button type="submit" size="lg">
               Create Profile
             </Button>
