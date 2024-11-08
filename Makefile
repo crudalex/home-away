@@ -1,13 +1,19 @@
 # Makefile
 
-# Define the file to be encrypted/decrypted
-ENV_FILE=.env.local
-ENCRYPTED_FILE=$(ENV_FILE).gpg
+# Define the files to be encrypted/decrypted
+SECRET_FILES := .env.local .env  # List of files to be encrypted/decrypted
+ENCRYPTED_FILES := $(SECRET_FILES:%=%.gpg)  # Generate a list of encrypted file names by appending .gpg to each file in SECRET_FILES
 
-# Encrypt the .env.local file
-encrypt: 
-	@gpg --symmetric --cipher-algo AES256 $(ENV_FILE)
+# Encrypt all specified files
+encrypt: $(ENCRYPTED_FILES)  # The encrypt target depends on all encrypted files
 
-# Decrypt the .env.local.gpg file
-decrypt: 
-	@gpg --output $(ENV_FILE) --decrypt $(ENCRYPTED_FILE)
+# Pattern rule to encrypt each file in SECRET_FILES
+$(ENCRYPTED_FILES): %.gpg: %
+	@gpg --symmetric --cipher-algo AES256 $<  # Encrypt the file using gpg with AES256 cipher
+
+# Decrypt all specified files
+decrypt: $(SECRET_FILES)  # The decrypt target depends on all original files
+
+# Pattern rule to decrypt each file in ENCRYPTED_FILES
+$(SECRET_FILES): %: %.gpg
+	@gpg --output $@ --decrypt $<  # Decrypt the file using gpg
