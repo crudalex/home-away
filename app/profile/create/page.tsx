@@ -3,13 +3,7 @@ import FormContainer from "@/components/form/FormContainer";
 import FormInput from "@/components/form/FormInput";
 import { Sub } from "@radix-ui/react-dropdown-menu";
 import React from "react";
-
-const createProfileAction = async (preState: any, formData: FormData) => {
-  "use server";
-  const firstName = formData.get("firstName");
-  if (firstName !== "shakeAndBake") return { message: "There was an error..." };
-  return { message: "Profile created" };
-};
+import { createProfileAction } from "@/utils/actions";
 
 function CreateProfilePage() {
   return (
