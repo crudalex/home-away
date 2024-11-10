@@ -47,3 +47,9 @@ migrate:
 # without creating a migration
 db_push: 
 	@npx prisma db push  
+
+# Open Prisma Studio
+prisma_studio:
+	@npx prisma studio
+
+PHONY: encrypt decrypt migrate db_push prisma_studio
