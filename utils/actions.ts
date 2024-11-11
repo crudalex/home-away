@@ -2,10 +2,18 @@
 
 import { profileSchema } from "./schemas";
 import db from "./db";
-import { auth, clerkClient, currentUser } from "@clerk/nextjs/server";
+import { auth, clerkClient, currentUser, getAuth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { actionFunction } from "./types";
 
+const getAuthUser = async () => {
+  const user = await currentUser();
+  if (!user) throw new Error("You must be logged in to create a profile");
+  if (!user.privateMetadata.hasProfile) redirect("/profile/create"); // preliminary check based on the user's metadata
+
+  return user;
+};
 export const createProfileAction = async (
   preState: any,
   formData: FormData
@@ -50,4 +58,22 @@ export const fetchProfileImage = async () => {
     },
   });
   return profile?.profileImage;
+};
+
+export const fetchProfile = async () => {
+  const user = await getAuthUser();
+  const profile = db.profile.findUnique({
+    where: {
+      clerkId: user.id,
+    },
+  });
+  if (!profile) throw new Error("Profile not found"); // check based on the actual existence of the profile in the database
+  return profile;
+};
+
+export const updateProfileAction: actionFunction = async (
+  prevState: any,
+  formData: FormData
+): Promise<{ message: string }> => {
+  return { message: "update profile action" };
 };
