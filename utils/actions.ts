@@ -1,6 +1,6 @@
 "use server";
 
-import { profileSchema } from "./schemas";
+import { profileSchema, validateWithZodSchema } from "./schemas";
 import db from "./db";
 import { auth, clerkClient, currentUser, getAuth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
@@ -31,7 +31,8 @@ export const createProfileAction = async (
 
     // const rawData = Object.fromEntries(formData.entries());
     const rawData = Object.fromEntries(formData);
-    const validatedFields = profileSchema.parse(rawData);
+    // const validatedFields = profileSchema.parse(rawData);
+    const validatedFields = validateWithZodSchema(profileSchema, rawData);
     await db.profile.create({
       data: {
         clerkId: user.id,
@@ -83,17 +84,13 @@ export const updateProfileAction: actionFunction = async (
   const user = await getAuthUser();
   try {
     const rawData = Object.fromEntries(formData);
-    const validatedFields = profileSchema.safeParse(rawData);
-    if (!validatedFields.success) {
-      const errors = validatedFields.error.errors.map((error) => error.message);
-      throw new Error(errors.join(", "));
-    }
+    const validatedFields = validateWithZodSchema(profileSchema, rawData);
 
     await db.profile.update({
       where: {
         clerkId: user.id,
       },
-      data: validatedFields.data,
+      data: validatedFields,
     });
     revalidatePath("/profile");
     return { message: "Profile updated successfully" };
